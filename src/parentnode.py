@@ -1,20 +1,32 @@
+# python
 from htmlnode import HTMLNode
 
 class ParentNode(HTMLNode):
     def __init__(self, tag, children, props=None):
+        if not tag:
+            raise ValueError("ParentNode requires a tag")
+        # normalize children to a list
+        if children is None:
+            raise ValueError("ParentNode requires children")
+        if not isinstance(children, (list, tuple)):
+            children = [children]
         super().__init__(tag, None, children, props)
 
+    # def to_html(self):
+    #     if not self.tag:
+    #         raise ValueError("ParentNode requires a tag")
+    #     if not self.children:
+    #         raise ValueError("ParentNode requires children")
+    #     open_tag = f"<{self.tag}{self.props_to_html()}>"
+    #     inner = "".join(child.to_html() for child in self.children)
+    #     close = f"</{self.tag}>"
+    #     return f"{open_tag}{inner}{close}"
+
     def to_html(self):
-        if self.tag == None:
-            raise ValueError("Error: tag not provided.")
-        if self.children == None:
-            raise ValueError("Error: children not provided.")
-        
-        if self.props == None:
-            html_text = f"<{self.tag}>"
-        else:
-            html_text = f"<{self.tag}{self.props_to_html()}>"
-        for i in self.children:
-            html_text += i.to_html()
-        html_text += f"</{self.tag}>"
-        return html_text
+        if not self.tag:
+            raise ValueError("ParentNode requires a tag")
+        if self.children is None:
+            raise ValueError("ParentNode requires children")
+        open_tag = f"<{self.tag}{self.props_to_html()}>"
+        inner = "".join(child.to_html() for child in self.children)
+        return f"{open_tag}{inner}</{self.tag}>"
