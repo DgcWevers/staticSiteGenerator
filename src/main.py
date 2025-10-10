@@ -1,10 +1,12 @@
 from textnode import TextNode # type: ignore
 import logging, os, shutil, stat
-
+from webpage import generate_page, generate_pages_recursive # type: ignore
 
 def main():
     logging.basicConfig(filename="logging.log",encoding='utf-8',level=logging.DEBUG)
     copy_contents('public', 'static')
+
+    generate_pages_recursive('content', 'template.html', 'public/index.html')
 
 
 def copy_contents(destination, source):
